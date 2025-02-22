@@ -1,5 +1,5 @@
 name: 기능 요청
-description: 프로젝트를 위한 기능 및 아이디어 제안합니다.
+description: 프로젝트를 위한 기능 및 아이디어를를 제안합니다.
 title: "[✨Feat]: "
 labels: ["enhancement"]
 body:
@@ -23,8 +23,8 @@ body:
         예 : 위 문제를 해결 하기 위해 LLM 적용 코드 필요
         - [ ] Huggingface LLM 모델 적용 코드 추가 (run.py, model_utils.py)
         - [ ] LLM 모델 적용을 위한 config 파일 수정 (example.yaml)
-      validations:
-        required: true
+    validations:
+      required: true
 
   - type: textarea
     id: reference
