@@ -68,12 +68,13 @@ def main():
 
     # Inference
     print("테스트 실행 시작... 총 테스트 샘플 수:", len(test_data))
-    test_results = [
-        qa_chain.invoke(row.question)["result"]
-        for row in tqdm(
-            test_data.itertuples(index=False), total=len(test_data), desc="Processing"
-        )
-    ]
+
+    test_results = []
+
+    for i in tqdm(range(0, len(test_data), batch_size), desc="Processing"):
+        batch = test_data.iloc[i : i + batch_size]
+        batch_results = [qa_chain.invoke(row.question)["result"] for row in batch.itertuples(index=False)]
+        test_results.extend(batch_results)
 
     # Submission
     embedding = SentenceTransformer(embedding_model_name)
