@@ -5,11 +5,11 @@ from transformers import (
     AutoTokenizer,
     BitsAndBytesConfig,
 )
-from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.vectorstores import FAISS
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
-from langchain.llms import HuggingFacePipeline
+from langchain_huggingface import HuggingFacePipeline
 
 
 def initialize_model(model_name=None, model_path=None):
@@ -20,9 +20,9 @@ def initialize_model(model_name=None, model_path=None):
         bnb_4bit_compute_dtype=torch.bfloat16,
     )
     if model_name:
-        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir=model_path)
         model = AutoModelForCausalLM.from_pretrained(
-            model_name, quantization_config=bnb_config, device_map="auto"
+            model_name, quantization_config=bnb_config, device_map="auto", cache_dir=model_path
         )
     elif model_path:
         tokenizer = AutoTokenizer.from_pretrained(model_path)
