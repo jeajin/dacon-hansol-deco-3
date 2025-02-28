@@ -10,7 +10,8 @@ from sentence_transformers import SentenceTransformer
 from utils.data_utils import load_data, preprocess_data, create_qa_data
 from utils.model_utils import initialize_model, create_vector_store, create_qa_chain
 
-
+import torch._dynamo
+torch._dynamo.config.suppress_errors = True
 from torch.utils.data import DataLoader
 
 class QADataSet(Dataset):

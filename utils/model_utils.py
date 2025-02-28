@@ -12,7 +12,9 @@ from langchain.chains import RetrievalQA
 from langchain_huggingface import HuggingFacePipeline
 
 
+
 def initialize_model(model_name=None, model_path=None):
+    
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_use_double_quant=True,
@@ -43,7 +45,7 @@ def create_vector_store(train_data, embedding_model_name):
     return FAISS.from_texts(documents, embedding)
 
 
-def create_qa_chain(vector_store, model, tokenizer, prompt_template):
+def create_qa_chain(vector_store, model, tokenizer, prompt_template, batch_size=4):
     retriever = vector_store.as_retriever(search_model="cosine", search_kwargs={"k": 5})
     text_gen_pipeline = pipeline(
         model=model,
@@ -53,6 +55,7 @@ def create_qa_chain(vector_store, model, tokenizer, prompt_template):
         temperature=0.1,
         return_full_text=False,
         max_new_tokens=64,
+        batch_size=batch_size,
     )
     llm = HuggingFacePipeline(pipeline=text_gen_pipeline)
     prompt = PromptTemplate(
